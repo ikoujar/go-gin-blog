@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+#  db:
+#    image: mongo
+#    restart: always
+#    environment:
+#      MONGO_INITDB_ROOT_USERNAME: root
+#      MONGO_INITDB_ROOT_PASSWORD: example
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: example
+
+  web:
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: docker
+    ports:
+      - 8000:8000
+    volumes:
+      - ./:/app
+    environment:
+      - VIRTUAL_HOST=your_domain
+      - LETSENCRYPT_HOST=your_domain
+    depends_on:
+      - db
